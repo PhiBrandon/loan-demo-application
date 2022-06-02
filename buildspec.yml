@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+  parameter-store:
+    NEXTAUTH_URL: /CodeBuild/NEXTAUTH_SECRET
+    DATABASE_URL: /CodeBuild/DATABASE_URL
+    NEXTAUTH_SECRET: /CodeBuild/NEXTAUTH_SECRET
+
 phases:
   install:
     commands:
@@ -8,11 +14,12 @@ phases:
       - yarn
   pre_build:
     commands:
-      - printenv > .env
+      - printenv > .env 
+      - cat .env 
   build:
     commands:
       - echo Compiling the Node.js code
-      - yarn build
+      - npm run build
   post_build:
     commands:
       - echo Build completed on `date`
