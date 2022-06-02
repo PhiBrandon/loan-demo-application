@@ -5,7 +5,7 @@ if test -f "$FILE"; then
     cd /home/ubuntu
     pm2 stop --silent next
     pm2 delete next
-    killall -9 node
+    sudo killall -9 node
 else
     echo "$FILE does not exist."
 fi
