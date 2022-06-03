@@ -1,4 +1,5 @@
 #!/bin/bash
+source /home/ubuntu/.profile
 FILE=/home/ubuntu/loan-application/package.json
 if test -f "$FILE"; then
     echo "$FILE exists"
