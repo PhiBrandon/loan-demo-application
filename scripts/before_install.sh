@@ -1,6 +1,6 @@
 #!/bin/bash
 source /home/ubuntu/.profile
-FILE=/home/ubuntu/loan-application/package.json
+FILE=/home/ubuntu/loan-demo-application/package.json
 if test -f "$FILE"; then
     echo "$FILE exists"
     cd /home/ubuntu
@@ -11,8 +11,7 @@ else
     echo "$FILE does not exist."
 fi
 cd /home/ubuntu/
-sudo rm -rf loan-application
-sudo mkdir loan-application
+sudo rm -rf loan-demo-application
 echo "$HOME"
 echo "$USER"
 echo ""
