@@ -1,4 +1,3 @@
-#!/bin/bash
 source /home/ubuntu/.profile
 cd /home/ubuntu/loan-application
 echo ""
