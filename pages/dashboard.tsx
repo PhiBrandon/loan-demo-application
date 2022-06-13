@@ -19,12 +19,9 @@ import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 import DashboardContentLayout from "./dashboardContentLayout";
 
 const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "History", href: "#", icon: ClockIcon, current: false },
-  { name: "Balances", href: "#", icon: ScaleIcon, current: false },
-  { name: "Cards", href: "#", icon: CreditCardIcon, current: false },
-  { name: "Recipients", href: "#", icon: UserGroupIcon, current: false },
-  { name: "Reports", href: "#", icon: DocumentReportIcon, current: false },
+  { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+  { name: "Loan Applications", href: "/loanform", icon: ClockIcon, current: false },
+  { name: "Current Loans", href: "/currentloans", icon: ScaleIcon, current: false },
 ];
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },

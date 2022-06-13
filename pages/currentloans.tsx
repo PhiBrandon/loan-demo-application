@@ -21,9 +21,9 @@ import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
 import { PrismaClient } from "@prisma/client";
 
 const navigation = [
-  { name: "Home", href: "/", icon: HomeIcon, current: true },
+  { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
   { name: "Loan Applications", href: "/loanform", icon: ClockIcon, current: false },
-  { name: "Current Loans", href: "/loans", icon: ScaleIcon, current: false },
+  { name: "Current Loans", href: "/currentloans", icon: ScaleIcon, current: false },
 ];
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
@@ -35,10 +35,42 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default async function CurrentLoans(props : any) {
+const loanData = [
+
+  {
+    AppliedAt: "3/14/22",
+    InterestRate: 0.35,
+    LoanProvider: "Mountain America",
+    AmountDue: 9354.53,
+    Status: "pending"
+
+  }, {
+    AppliedAt: "3/14/22",
+    InterestRate: 0.35,
+    LoanProvider: "Ocktank America",
+    AmountDue: 9354.53,
+    Status: "pending"
+
+  }, {
+    AppliedAt: "3/14/22",
+    InterestRate: 0.35,
+    LoanProvider: "Bank of America",
+    AmountDue: 9354.53,
+    Status: "pending"
+
+  }, {
+    AppliedAt: "3/14/22",
+    InterestRate: 0.35,
+    LoanProvider: "All American",
+    AmountDue: 9354.53,
+    Status: "approved"
+
+  }]
+
+export default function CurrentLoans() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: session, status: isLoading } = useSession();
-  
+
   return (
     <>
       <div className="min-h-full">
@@ -320,32 +352,40 @@ export default async function CurrentLoans(props : any) {
               </div>
             </div>
           </div>
-          {isLoading != "loading"? (
+          {isLoading != "loading" ? (
             /* Loans Modules */
             <>
               <div className="flex max-w justify-between p-5 mx-10">
-                {props.loans.map((loan:any) => (
+                {/* {props.loans.map((loan:any) => (
                   <div className="py-7 px-12 border-2 rounded-2xl ">
                     <p>Loan Status: {loan.status}</p>
                     <p>{loan.userid}</p>
                   </div>
+                ))} */}
+                {loanData.map((loan) => (
+                  <>
+                  <div className="py-7 px-12 border-2 rounded-2xl ">
+                  <p>Loan Status: {loan.Status}</p>
+                  <p>{loan.AmountDue}</p>
+                  </div>
+                  </>
                 ))}
               </div>
               <div className="flex justify-center mx-10">
                 <button className="py-5 px-10 border-2 rounded-2xl ">Apply</button>
               </div>
             </>
-          ) : (
-            <div className="text-center">Loading...</div>
+              ) : (
+              <div className="text-center">Loading...</div>
           )}
-        </div>
+            </div>
       </div>
-    </>
-  );
+      </>
+      );
 }
 
 
-export async function getStaticProps() {
+/* export async function getStaticProps() {
   const prisma = new PrismaClient()
   const { data: session, status: isLoading } = useSession();
   const currentEmail = session?.user?.email
@@ -364,4 +404,4 @@ export async function getStaticProps() {
   })
 
   return {props: {loans:getLoans}}
-}
+} */

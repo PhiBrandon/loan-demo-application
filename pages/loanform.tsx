@@ -20,9 +20,9 @@ import DashboardContentLayout from "./dashboardContentLayout";
 import FormComponent from "./components/formcomponent";
 
 const navigation = [
-  { name: "Home", href: "/", icon: HomeIcon, current: true },
+  { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
   { name: "Loan Applications", href: "/loanform", icon: ClockIcon, current: false },
-  { name: "Current Loans", href: "/loans", icon: ScaleIcon, current: false },
+  { name: "Current Loans", href: "/currentloans", icon: ScaleIcon, current: false },
 ];
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
