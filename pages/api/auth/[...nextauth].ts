@@ -40,7 +40,7 @@ export default NextAuth({
                 throw new Error('Password doesnt match');
             }
             client.$disconnect
-            return {email: users[0].email, name: users[0].name};
+            return users[0];
         },
     }),
     

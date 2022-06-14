@@ -3,27 +3,25 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   ClockIcon,
   CogIcon,
-  CreditCardIcon,
-  DocumentReportIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
   ScaleIcon,
   ShieldCheckIcon,
-  UserGroupIcon,
   XIcon,
   BellIcon,
   MenuAlt1Icon,
 } from "@heroicons/react/outline";
-import { useSession, signOut } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/solid";
-
+import { InferGetServerSidePropsType } from "next";
+import { GetServerSideProps } from "next";
 
 import { PrismaClient } from "@prisma/client";
 
 const navigation = [
-  { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+  { name: "Home", href: "/dashboard", icon: HomeIcon, current: false },
   { name: "Loan Applications", href: "/loanform", icon: ClockIcon, current: false },
-  { name: "Current Loans", href: "/currentloans", icon: ScaleIcon, current: false },
+  { name: "Current Loans", href: "/currentloans", icon: ScaleIcon, current: true },
 ];
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
@@ -67,7 +65,45 @@ const loanData = [
 
   }]
 
-export default function CurrentLoans() {
+
+  export const getServerSideProps: GetServerSideProps = async (context) => {
+
+   
+    const session = await getSession(context)
+    const client = new PrismaClient()
+  
+    const user = await client.users.findMany({
+      where: {
+        email: session?.user?.email,
+      }
+    })
+    
+    const userId = user[0].id
+    const loanApplications = await client.loanapplications.findMany({
+      where: {
+        userid: userId,
+      }
+    })
+    const cleanedApplications = loanApplications.map((application) => ({
+      ...application,
+      creditscore: application.creditscore?.toNumber(),
+      postalcode: application.postalcode?.toNumber(),
+      appliedat: application.appliedat?.toNumber(),
+      amountdue: application.amountdue?.toNumber(),
+
+    }))
+    client.$disconnect()
+    return {
+      props: {
+        data: cleanedApplications
+      }
+    }
+    
+  }
+
+export default function CurrentLoans({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: session, status: isLoading } = useSession();
 
@@ -158,23 +194,7 @@ export default function CurrentLoans() {
                         </a>
                       ))}
                     </div>
-                    <div className="mt-6 pt-6">
-                      <div className="px-2 space-y-1">
-                        {secondaryNavigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className="group flex items-center px-2 py-2 text-base font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
-                          >
-                            <item.icon
-                              className="mr-4 h-6 w-6 text-cyan-200"
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
+                    
                   </nav>
                 </Dialog.Panel>
               </Transition.Child>
@@ -217,23 +237,7 @@ export default function CurrentLoans() {
                   </a>
                 ))}
               </div>
-              <div className="mt-6 pt-6">
-                <div className="px-2 space-y-1">
-                  {secondaryNavigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
-                    >
-                      <item.icon
-                        className="mr-4 h-6 w-6 text-cyan-200"
-                        aria-hidden="true"
-                      />
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
+              
             </nav>
           </div>
         </div>
@@ -248,29 +252,8 @@ export default function CurrentLoans() {
               <MenuAlt1Icon className="h-6 w-6" aria-hidden="true" />
             </button>
             {/* Search bar */}
-            <div className="flex-1 px-4 flex justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-              <div className="flex-1 flex">
-                <form className="w-full flex md:ml-0" action="#" method="GET">
-                  <label htmlFor="search-field" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                    <div
-                      className="absolute inset-y-0 left-0 flex items-center pointer-events-none"
-                      aria-hidden="true"
-                    >
-                      <SearchIcon className="h-5 w-5" aria-hidden="true" />
-                    </div>
-                    <input
-                      id="search-field"
-                      name="search-field"
-                      className="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-sm"
-                      placeholder="Search transactions"
-                      type="search"
-                    />
-                  </div>
-                </form>
-              </div>
+            <div className="flex-1 px-4 flex justify-end sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
+              
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
@@ -362,11 +345,12 @@ export default function CurrentLoans() {
                     <p>{loan.userid}</p>
                   </div>
                 ))} */}
-                {loanData.map((loan) => (
+                {data.map((loan:any) => (
                   <>
                   <div className="py-7 px-12 border-2 rounded-2xl ">
-                  <p>Loan Status: {loan.Status}</p>
-                  <p>{loan.AmountDue}</p>
+                  <p>Loan Status: {loan.status}</p>
+                  <p>Loan Type: {loan.type}</p>
+                  <p>Amount Due: ${loan.amountdue}</p>
                   </div>
                   </>
                 ))}

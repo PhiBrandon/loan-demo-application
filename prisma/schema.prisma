@@ -8,18 +8,18 @@ datasource db {
 }
 
 model loanapplications {
-  loanid        String?   @db.Uuid
-  userid        String?   @db.Uuid
-  appliedat     DateTime? @db.Date
+  userid        String?  @db.Uuid
   status        String?
-  id            String    @id @db.Uuid
+  id            String   @id @db.Uuid
   type          String?
   propertytype  String?
-  creditscore   Decimal?  @db.Decimal
+  creditscore   Decimal? @db.Decimal
   streetaddress String?
   propertyuse   String?
   city          String?
-  postalcode    Decimal?  @db.Decimal
+  postalcode    Decimal? @db.Decimal
+  appliedat     Decimal? @db.Decimal
+  amountdue     Decimal? @default(0) @db.Decimal
 }
 
 model loans {
