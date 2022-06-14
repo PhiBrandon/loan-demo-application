@@ -77,10 +77,11 @@ const loanData = [
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   const client = new PrismaClient();
+  const email = session?.user?.email
 
   const user = await client.users.findMany({
     where: {
-      email: session?.user?.email,
+      email: email != null ? email : undefined,
     },
   });
 
