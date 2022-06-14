@@ -1,22 +1,31 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+
+import { v4 as uuidv4 } from 'uuid';
+
 export default function FormComponent() {
+    const submitForm = async (e:any) => {
+        e.preventDefault();
+        const data = {
+            "property": e.target.property.value,
+            "creditscore": e.target.property.value,
+            "type": "mortgage",
+            "streetaddress": e.target.property.value,
+            "city": e.target.property.value,
+            "postalcode": e.target.property.value,
+            "propertyuse":e.target.propertyUse.value,
+            "appliedat":Date.now(),
+            "id": uuidv4(),
+        }
+        console.log(e.target.property.value)
+        console.log(e.target.creditscore.value)
+        console.log(e.target.pushnotifications.value)
+        console.log(e.target.streetaddress.value)
+        console.log(e.target.city.value)
+        console.log(e.target.postalcode.value)
+        console.log(e.target.propertyUse.value)
+        
+    }
     return (
-        <form className="space-y-8 divide-y divide-gray-200">
+        <form className="space-y-8 divide-y divide-gray-200" onSubmit={submitForm}>
             <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 
 
@@ -66,23 +75,23 @@ export default function FormComponent() {
                                             <div className="mt-4 space-y-4">
                                                 <div className="flex items-center">
                                                     <input
-                                                        id="push-everything"
-                                                        name="push-notifications"
+                                                        id="pusheverything"
+                                                        name="pushnotifications"
                                                         type="radio"
                                                         className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                                     />
-                                                    <label htmlFor="push-everything" className="ml-3 block text-sm font-medium text-gray-700">
+                                                    <label htmlFor="pusheverything" className="ml-3 block text-sm font-medium text-gray-700">
                                                         Yes
                                                     </label>
                                                 </div>
                                                 <div className="flex items-center">
                                                     <input
-                                                        id="push-email"
-                                                        name="push-notifications"
+                                                        id="pusheemail"
+                                                        name="pushnotifications"
                                                         type="radio"
                                                         className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                                     />
-                                                    <label htmlFor="push-email" className="ml-3 block text-sm font-medium text-gray-700">
+                                                    <label htmlFor="pushemail" className="ml-3 block text-sm font-medium text-gray-700">
                                                         No
                                                     </label>
                                                 </div>
@@ -101,7 +110,7 @@ export default function FormComponent() {
                                 <select
                                     id="propertyUse"
                                     name="propertyUse"
-                                    autoComplete="property-use"
+                                    autoComplete="propertyUse"
                                     className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                                 >
                                     <option>Primary Residence</option>
@@ -113,29 +122,29 @@ export default function FormComponent() {
                             </div>
                         </div>
                         <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                            <label htmlFor="credit-score" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            <label htmlFor="creditscore" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                                 Estimated Credit Score
                             </label>
                             <div className="mt-1 sm:mt-0 sm:col-span-2">
                                 <input
                                     type="text"
-                                    name="credit-score"
-                                    id="credit-score"
-                                    autoComplete="credit-score"
+                                    name="creditscore"
+                                    id="creditscore"
+                                    autoComplete="creditscore"
                                     className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                                 />
                             </div>
                         </div>
                         <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                            <label htmlFor="street-address" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            <label htmlFor="streetaddress" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                                 Street address
                             </label>
                             <div className="mt-1 sm:mt-0 sm:col-span-2">
                                 <input
                                     type="text"
-                                    name="street-address"
-                                    id="street-address"
-                                    autoComplete="street-address"
+                                    name="streetaddress"
+                                    id="streetaddress"
+                                    autoComplete="streetaddress"
                                     className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                                 />
                             </div>
@@ -172,15 +181,15 @@ export default function FormComponent() {
                         </div>
 
                         <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                            <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            <label htmlFor="postalcode" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                                 ZIP / Postal code
                             </label>
                             <div className="mt-1 sm:mt-0 sm:col-span-2">
                                 <input
                                     type="text"
-                                    name="postal-code"
-                                    id="postal-code"
-                                    autoComplete="postal-code"
+                                    name="postalcode"
+                                    id="postalcode"
+                                    autoComplete="postalcode"
                                     className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                                 />
                             </div>

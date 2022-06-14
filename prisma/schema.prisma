@@ -8,11 +8,18 @@ datasource db {
 }
 
 model loanapplications {
-  loanid    String?   @db.Uuid
-  userid    String?   @db.Uuid
-  appliedat DateTime? @db.Date
-  status    String?
-  id        String    @id @db.Uuid
+  loanid        String?   @db.Uuid
+  userid        String?   @db.Uuid
+  appliedat     DateTime? @db.Date
+  status        String?
+  id            String    @id @db.Uuid
+  type          String?
+  propertytype  String?
+  creditscore   Decimal?  @db.Decimal
+  streetaddress String?
+  propertyuse   String?
+  city          String?
+  postalcode    Decimal?  @db.Decimal
 }
 
 model loans {
@@ -24,13 +31,13 @@ model loans {
 
 model users {
   id       String  @id @db.Uuid
-  email    String  @unique
+  email    String
   name     String?
   password String?
 }
 
 model usersInfo {
-  email   String  @id @unique
+  email   String  @id
   name    String?
   address String?
   city    String?
