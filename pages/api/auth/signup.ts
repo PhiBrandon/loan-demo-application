@@ -21,13 +21,13 @@ export default async function handler(
         }
         const prisma = new PrismaClient()
         // Check if email exists
-        const user = await prisma.users.findUnique({
+        const user = await prisma.users.findMany({
             where: {
                 email: email,
             },
         })
 
-        if(user){
+        if(user[0]){
           res.status(422).json({message: 'User already exists'})
         }
 
