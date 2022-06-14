@@ -20,8 +20,18 @@ import { PrismaClient } from "@prisma/client";
 
 const navigation = [
   { name: "Home", href: "/dashboard", icon: HomeIcon, current: false },
-  { name: "Loan Applications", href: "/loanform", icon: ClockIcon, current: false },
-  { name: "Current Loans", href: "/currentloans", icon: ScaleIcon, current: true },
+  {
+    name: "Loan Applications",
+    href: "/loanform",
+    icon: ClockIcon,
+    current: false,
+  },
+  {
+    name: "Current Loans",
+    href: "/currentloans",
+    icon: ScaleIcon,
+    current: true,
+  },
 ];
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
@@ -34,72 +44,66 @@ function classNames(...classes: any[]) {
 }
 
 const loanData = [
-
   {
     AppliedAt: "3/14/22",
     InterestRate: 0.35,
     LoanProvider: "Mountain America",
     AmountDue: 9354.53,
-    Status: "pending"
-
-  }, {
+    Status: "pending",
+  },
+  {
     AppliedAt: "3/14/22",
     InterestRate: 0.35,
     LoanProvider: "Ocktank America",
     AmountDue: 9354.53,
-    Status: "pending"
-
-  }, {
+    Status: "pending",
+  },
+  {
     AppliedAt: "3/14/22",
     InterestRate: 0.35,
     LoanProvider: "Bank of America",
     AmountDue: 9354.53,
-    Status: "pending"
-
-  }, {
+    Status: "pending",
+  },
+  {
     AppliedAt: "3/14/22",
     InterestRate: 0.35,
     LoanProvider: "All American",
     AmountDue: 9354.53,
-    Status: "approved"
+    Status: "approved",
+  },
+];
 
-  }]
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  const client = new PrismaClient();
 
+  const user = await client.users.findMany({
+    where: {
+      email: session?.user?.email,
+    },
+  });
 
-  export const getServerSideProps: GetServerSideProps = async (context) => {
-
-   
-    const session = await getSession(context)
-    const client = new PrismaClient()
-  
-    const user = await client.users.findMany({
-      where: {
-        email: session?.user?.email,
-      }
-    })
-    
-    const userId = user[0].id
-    const loanApplications = await client.loanapplications.findMany({
-      where: {
-        userid: userId,
-      }
-    })
-    const cleanedApplications = loanApplications.map((application) => ({
-      ...application,
-      creditscore: application.creditscore?.toNumber(),
-      postalcode: application.postalcode?.toNumber(),
-      appliedat: application.appliedat?.toNumber(),
-      amountdue: application.amountdue?.toNumber(),
-
-    }))
-    client.$disconnect()
-    return {
-      props: {
-        data: cleanedApplications
-      }
-    }
-    
-  }
+  const userId = user[0].id;
+  const loanApplications = await client.loanapplications.findMany({
+    where: {
+      userid: userId,
+    },
+  });
+  const cleanedApplications = loanApplications.map((application) => ({
+    ...application,
+    creditscore: application.creditscore?.toNumber(),
+    postalcode: application.postalcode?.toNumber(),
+    appliedat: application.appliedat?.toNumber(),
+    amountdue: application.amountdue?.toNumber(),
+  }));
+  client.$disconnect();
+  return {
+    props: {
+      data: cleanedApplications,
+    },
+  };
+};
 
 export default function CurrentLoans({
   data,
@@ -194,7 +198,6 @@ export default function CurrentLoans({
                         </a>
                       ))}
                     </div>
-                    
                   </nav>
                 </Dialog.Panel>
               </Transition.Child>
@@ -209,9 +212,7 @@ export default function CurrentLoans({
         <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-col flex-grow bg-cyan-700 pt-5 pb-4 overflow-y-auto">
-            <div className="flex items-center flex-shrink-0 px-4">
-
-            </div>
+            <div className="flex items-center flex-shrink-0 px-4"></div>
             <nav
               className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto"
               aria-label="Sidebar"
@@ -237,7 +238,6 @@ export default function CurrentLoans({
                   </a>
                 ))}
               </div>
-              
             </nav>
           </div>
         </div>
@@ -253,7 +253,6 @@ export default function CurrentLoans({
             </button>
             {/* Search bar */}
             <div className="flex-1 px-4 flex justify-end sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-              
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
@@ -267,7 +266,6 @@ export default function CurrentLoans({
                 <Menu as="div" className="ml-3 relative">
                   <div>
                     <Menu.Button className="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
-
                       <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
                         <span className="sr-only">Open user menu for </span>
                         {isLoading == "loading"
@@ -336,38 +334,38 @@ export default function CurrentLoans({
             </div>
           </div>
           {isLoading != "loading" ? (
-            /* Loans Modules */
-            <>
-              <div className="flex max-w justify-between p-5 mx-10">
-                {/* {props.loans.map((loan:any) => (
+            data ? (
+              /* Loans Modules */
+              <>
+                <div className="grid grid-cols-2 justify-between p-5 text-center mx-auto">
+                  {/* {props.loans.map((loan:any) => (
                   <div className="py-7 px-12 border-2 rounded-2xl ">
                     <p>Loan Status: {loan.status}</p>
                     <p>{loan.userid}</p>
                   </div>
                 ))} */}
-                {data.map((loan:any) => (
-                  <>
-                  <div className="py-7 px-12 border-2 rounded-2xl ">
-                  <p>Loan Status: {loan.status}</p>
-                  <p>Loan Type: {loan.type}</p>
-                  <p>Amount Due: ${loan.amountdue}</p>
-                  </div>
-                  </>
-                ))}
-              </div>
-              <div className="flex justify-center mx-10">
-                <button className="py-5 px-10 border-2 rounded-2xl ">Apply</button>
-              </div>
-            </>
-              ) : (
-              <div className="text-center">Loading...</div>
+                  {data.map((loan: any) => (
+                    <>
+                      <div className="py-7 px-12 border-2 rounded-2xl max-w-md mr-20 mt-10">
+                        <p>Loan Status: {loan.status}</p>
+                        <p>Loan Type: {loan.type}</p>
+                        <p>Amount Due: ${loan.amountdue}</p>
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div> No Loans</div>
+            )
+          ) : (
+            <div className="text-center">Loading...</div>
           )}
-            </div>
+        </div>
       </div>
-      </>
-      );
+    </>
+  );
 }
-
 
 /* export async function getStaticProps() {
   const prisma = new PrismaClient()
