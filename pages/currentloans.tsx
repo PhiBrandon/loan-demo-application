@@ -351,7 +351,7 @@ export default function CurrentLoans({
                         <p>Loan Status: {loan.status}</p>
                         <p>Loan Type: {loan.type}</p>
                         <p>Property Address: {loan.streetaddress}</p>
-                        <p>Amount Due: ${loan.amountdue}</p>
+                        {loan.status == "approved" ? <p>Amount Due: ${loan.amountdue}</p> : <p></p>}
                       </div>
                     </>
                   ))}

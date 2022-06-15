@@ -1,9 +1,25 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 import Signin from './signIn'
+import { GetServerSideProps } from "next";
+import { InferGetServerSidePropsType } from "next";
 
 
-const Home: NextPage = () => {
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    const instanceId = await fetch("http://169.254.169.254/latest/meta-data/instance-id")
+    console.log(instanceId)
+    return {
+      props: {
+        instanceId: instanceId,
+      }
+    }
+};
+
+const Home: NextPage = ({
+  instanceId,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div>
       <Head>
@@ -14,6 +30,7 @@ const Home: NextPage = () => {
 
       <main>
         <Signin></Signin>
+        {instanceId ? <p>{instanceId}</p> : <></>}
       </main>
 
     </div>
