@@ -363,6 +363,7 @@ export default function CurrentLoans({
           ) : (
             <div className="text-center">Loading...</div>
           )}
+          {process.env.instanceid ? <p>{process.env.instanceid}</p> : <></>}
         </div>
       </div>
     </>
