@@ -350,6 +350,7 @@ export default function CurrentLoans({
                       <div className="py-7 px-12 border-2 rounded-2xl max-w-md mr-20 mt-10">
                         <p>Loan Status: {loan.status}</p>
                         <p>Loan Type: {loan.type}</p>
+                        <p>Property Address: {loan.streetaddress}</p>
                         <p>Amount Due: ${loan.amountdue}</p>
                       </div>
                     </>
